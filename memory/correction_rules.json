@@ -1,0 +1,33 @@
+{
+  "ocr_corrections": {
+    "E": "∑",
+    "II": "∏",
+    "0": "θ",
+    "a": "α",
+    "B": "β",
+    "y": "γ",
+    "A": "Δ"
+  },
+  "asr_corrections": {
+    "square root of x": "√x",
+    "x raised to the power": "x^",
+    "x squared": "x^2",
+    "x cubed": "x^3",
+    "integral of": "∫",
+    "dy by dx": "dy/dx",
+    "d by dx": "d/dx",
+    "sigma": "Σ",
+    "pi": "π",
+    "theta": "θ",
+    "alpha": "α",
+    "beta": "β",
+    "gamma": "γ",
+    "delta": "Δ",
+    "infinity": "∞",
+    "plus or minus": "±",
+    "greater than or equal to": "≥",
+    "less than or equal to": "≤",
+    "not equal to": "≠"
+  },
+  "learned_corrections": []
+}
