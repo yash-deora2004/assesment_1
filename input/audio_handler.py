@@ -46,6 +46,23 @@ class AudioHandler:
             import whisper
             self._model = whisper.load_model(self.model_name)
 
+    def process_bytes(self, audio_bytes: bytes, filename: str = "recorded.wav") -> Dict[str, Any]:
+        """
+        Process raw audio bytes (e.g. from a live recording widget).
+
+        Args:
+            audio_bytes: Raw audio data as bytes.
+            filename: Name hint for the temp file extension.
+
+        Returns:
+            Dict with transcript, confidence, and metadata.
+        """
+        suffix = "." + filename.rsplit(".", 1)[-1] if "." in filename else ".wav"
+        with tempfile.NamedTemporaryFile(delete=False, suffix=suffix) as tmp:
+            tmp.write(audio_bytes)
+            audio_path = tmp.name
+        return self.process(audio_path)
+
     def process(self, audio_file) -> Dict[str, Any]:
         """
         Process an uploaded audio file and transcribe it.

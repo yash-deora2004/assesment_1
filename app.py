@@ -105,15 +105,36 @@ with st.sidebar:
 
     # --- Audio Input ---
     elif input_mode == "Audio":
-        uploaded_audio = st.file_uploader(
-            "Upload an audio file",
-            type=["wav", "mp3", "m4a"],
+        audio_source = st.radio(
+            "Audio source",
+            ["Record", "Upload"],
+            horizontal=True,
         )
-        if uploaded_audio:
-            st.audio(uploaded_audio)
+
+        audio_data = None
+
+        if audio_source == "Record":
+            from st_audiorec import st_audiorec
+            recorded_audio = st_audiorec()
+            if recorded_audio is not None and len(recorded_audio) > 0:
+                st.audio(recorded_audio, format="audio/wav")
+                audio_data = ("recorded.wav", recorded_audio)
+        else:
+            uploaded_audio = st.file_uploader(
+                "Upload an audio file",
+                type=["wav", "mp3", "m4a"],
+            )
+            if uploaded_audio:
+                st.audio(uploaded_audio)
+                audio_data = ("uploaded", uploaded_audio)
+
+        if audio_data is not None:
             if st.button("Transcribe & Solve", type="primary", use_container_width=True, disabled=st.session_state.processing):
                 with st.spinner("Transcribing audio..."):
-                    asr_result = audio_handler.process(uploaded_audio)
+                    if audio_data[0] == "uploaded":
+                        asr_result = audio_handler.process(audio_data[1])
+                    else:
+                        asr_result = audio_handler.process_bytes(audio_data[1], filename=audio_data[0])
                 st.session_state.extracted_text = asr_result.get("text", "")
                 asr_conf = asr_result.get("confidence", 0)
                 st.info(f"ASR Confidence: {asr_conf:.2f}")
