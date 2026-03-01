@@ -115,7 +115,7 @@ class TestCorrectionRules(unittest.TestCase):
     def test_correction_rules_structure(self):
         """Test correction rules JSON structure."""
         path = os.path.join(os.path.dirname(__file__), "..", "memory", "correction_rules.json")
-        with open(path) as f:
+        with open(path, encoding="utf-8") as f:
             rules = json.load(f)
         self.assertIn("ocr_corrections", rules)
         self.assertIn("asr_corrections", rules)
