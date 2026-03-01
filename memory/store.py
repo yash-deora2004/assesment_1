@@ -66,7 +66,7 @@ class MemoryStore:
 
         if os.path.exists(index_file) and os.path.exists(ids_file):
             self._faiss_index = faiss.read_index(index_file)
-            with open(ids_file, "r") as f:
+            with open(ids_file, "r", encoding="utf-8") as f:
                 self._memory_ids = json.load(f)
         else:
             self._faiss_index = faiss.IndexFlatIP(EMBEDDING_DIM)
@@ -79,7 +79,7 @@ class MemoryStore:
             self._faiss_index,
             os.path.join(MEMORY_INDEX_PATH, "memory.faiss"),
         )
-        with open(os.path.join(MEMORY_INDEX_PATH, "memory_ids.json"), "w") as f:
+        with open(os.path.join(MEMORY_INDEX_PATH, "memory_ids.json"), "w", encoding="utf-8") as f:
             json.dump(self._memory_ids, f)
 
     def store(self, interaction: Dict[str, Any]) -> str:
@@ -215,7 +215,7 @@ class MemoryStore:
     def get_correction_rules(self) -> Dict:
         """Load OCR/ASR correction rules from JSON."""
         if os.path.exists(CORRECTION_RULES_PATH):
-            with open(CORRECTION_RULES_PATH, "r") as f:
+            with open(CORRECTION_RULES_PATH, "r", encoding="utf-8") as f:
                 return json.load(f)
         return {"ocr_corrections": {}, "asr_corrections": {}, "learned_corrections": []}
 
@@ -228,7 +228,7 @@ class MemoryStore:
             "source": source,
             "timestamp": datetime.utcnow().isoformat() + "Z",
         })
-        with open(CORRECTION_RULES_PATH, "w") as f:
+        with open(CORRECTION_RULES_PATH, "w", encoding="utf-8") as f:
             json.dump(rules, f, indent=2, ensure_ascii=False)
 
     def apply_corrections(self, text: str, input_type: str = "text") -> str:
